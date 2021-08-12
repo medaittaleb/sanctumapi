@@ -27,7 +27,14 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required',
+            'age' => 'required',
+            'type' => 'required'
+        ]);
+
+        return Cat::create($request->all());
     }
 
     /**
@@ -38,7 +45,7 @@ class CatController extends Controller
      */
     public function show($id)
     {
-        //
+        return Cat::find($id);
     }
 
     /**
@@ -50,7 +57,9 @@ class CatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cat = Cat::find($id);
+        $cat->update($request->all());
+        return $cat;
     }
 
     /**
@@ -61,6 +70,18 @@ class CatController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Cat::destroy($id);
     }
+
+    /**
+     * Search for a name
+     *
+     * @param  str  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        return Cat::where('name', 'like', '%'.$name.'%')->get();
+    }
+
 }

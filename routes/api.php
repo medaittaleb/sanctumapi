@@ -20,5 +20,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+// Route::resource('cats', CatController::class);
+
+
+
 Route::get('/cats', [CatController::class, 'index']);
+Route::get('/cats/{id}', [CatController::class, 'show']);
+Route::get('/cats/search/{name}', [CatController::class, 'search']);
+
+Route::post('/cats', [CatController::class, 'store']);
+Route::put('/cats/{id}', [CatController::class, 'update']);
+Route::delete('/cats/{id}', [CatController::class, 'destroy']);
 
