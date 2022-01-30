@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,12 +24,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::resource('cats', CatController::class);
 
 
-
+// Public
 Route::get('/cats', [CatController::class, 'index']);
 Route::get('/cats/{id}', [CatController::class, 'show']);
 Route::get('/cats/search/{name}', [CatController::class, 'search']);
 
-Route::post('/cats', [CatController::class, 'store']);
-Route::put('/cats/{id}', [CatController::class, 'update']);
-Route::delete('/cats/{id}', [CatController::class, 'destroy']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+
+// Protected
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/cats', [CatController::class, 'store']);
+    Route::put('/cats/{id}', [CatController::class, 'update']);
+    Route::delete('/cats/{id}', [CatController::class, 'destroy']);
+
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+
+
+
 
